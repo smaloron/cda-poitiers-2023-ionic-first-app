@@ -6,27 +6,37 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
 
-  <h1>Bonjour {{ name }} vous avez {{ age }} ans</h1>
+  <h1>Bonjour {{ person.firstName }} vous avez {{ person.age }} ans</h1>
 
-  <p>{{ age + 6 }}</p>
+  <p>{{ person.age + 6 }}</p>
+
+  <p>{{ person | json}}</p>
+
+  <div [hidden]="! formIsTouched">
+    {{formIsValid ? 'Saisie ok' : 'Saisie incorrecte'}}
+  </div>
 
   <ion-button (click)="getOlder()" expand="block" color="{{buttonColor}}">
     Bon anniversaire
   </ion-button>
 
-  <ion-list>
+  <ion-button (click)="hiddenForm = ! hiddenForm" color="secondary">
+    {{ hiddenForm ? 'Afficher' : 'Masquer' }}
+  </ion-button>
+
+  <ion-list [class]="hiddenForm ? 'ion-hide': ''">
     <ion-item class="ion-padding" class="accent">
       <ion-label position="floating" color="primary">Prénom</ion-label>
-      <ion-input [(ngModel)]="name"></ion-input>
+      <ion-input [(ngModel)]="person.firstName"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Nom</ion-label>
-      <ion-input value="Brahé"></ion-input>
+      <ion-input [(ngModel)]="person.name"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">profession</ion-label>
-      <ion-select mode="ios">
+      <ion-select mode="ios" [(ngModel)]="person.profession">
         <ion-select-option> Développeur </ion-select-option>
         <ion-select-option> Graphiste </ion-select-option>
         <ion-select-option> Chef de projet </ion-select-option>
@@ -36,7 +46,7 @@
 
     <ion-item>
       <ion-label>Langages</ion-label>
-      <ion-select okText="Valider" cancelText="Annuler" multiple="true">
+      <ion-select okText="Valider" cancelText="Annuler" multiple="true" [(ngModel)]="person.skills">
         <ion-select-option>Java</ion-select-option>
         <ion-select-option>PHP</ion-select-option>
         <ion-select-option>Python</ion-select-option>
@@ -46,7 +56,7 @@
 
     <ion-item>
       <ion-label position="stacked">Bio</ion-label>
-      <ion-textarea rows="5"></ion-textarea>
+      <ion-textarea rows="5" [(ngModel)]="person.bio"></ion-textarea>
     </ion-item>
 
     <ion-radio-group>
@@ -54,17 +64,17 @@
 
       <ion-item>
         <ion-label>Femme</ion-label>
-        <ion-radio value="F" slot="start"></ion-radio>
+        <ion-radio value="F" slot="start" [(ngModel)]="person.gender"></ion-radio>
       </ion-item>
 
       <ion-item>
         <ion-label>Homme</ion-label>
-        <ion-radio value="M" slot="start"></ion-radio>
+        <ion-radio value="M" slot="start" [(ngModel)]="person.gender"></ion-radio>
       </ion-item>
     </ion-radio-group>
 
     <ion-item>
-      <ion-range min="20" max="80" step="10" pin="true" tick="true" snaps="true">
+      <ion-range min="20" max="80" step="10" pin="true" tick="true" snaps="true" [(ngModel)]="person.age">
 
         <ion-icon small slot="start" name="sunny" color="dark">
         </ion-icon>
@@ -86,6 +96,6 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button color="primary" expand="full">Valider</ion-button>
+    <ion-button color="primary" expand="full" (click)="onSubmit()">Valider</ion-button>
   </ion-toolbar>
 </ion-footer>
