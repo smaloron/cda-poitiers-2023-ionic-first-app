@@ -6,6 +6,13 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
 
+  <h2>Filtres</h2>
+  <ion-select [(ngModel)]="filterCriterion" (ionChange)="filterFood()">
+    <ion-select-option>tous</ion-select-option>
+    <ion-select-option>fruit</ion-select-option>
+    <ion-select-option>légume</ion-select-option>
+  </ion-select>
+
   <h2>Nouvel aliment</h2>
   <ion-list>
     <ion-item>
@@ -40,7 +47,7 @@
 
   <h2>Liste des aliments</h2>
   <ion-list>
-    <ion-item-sliding *ngFor="let item of foodList; let i = index">
+    <ion-item-sliding *ngFor="let item of filteredList; let i = index">
       <ion-item>
         <ion-label>
           {{ item.name }}

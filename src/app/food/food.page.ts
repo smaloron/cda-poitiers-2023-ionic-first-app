@@ -15,12 +15,16 @@ export class FoodPage implements OnInit {
     { name: 'Ananas', type: 'fruit' },
   ];
 
+  filteredList: Array<{ name: string, type: string }> = [];
+
   formInput = { name: '', type: '' };
   editedItemIndex: number | null = null;
+  filterCriterion = 'tous';
 
   constructor() { }
 
   ngOnInit() {
+    this.filterFood();
   }
 
   isInputValid() {
@@ -37,8 +41,9 @@ export class FoodPage implements OnInit {
     if (this.isInputValid()) {
       if (this.editedItemIndex === null) {
         this.foodList.push(this.formInput);
+        this.filterFood();
       } else {
-        const item = this.foodList[this.editedItemIndex];
+        const item = this.filteredList[this.editedItemIndex];
         item.name = this.formInput.name;
         item.type = this.formInput.type;
         this.editedItemIndex = null;
@@ -54,13 +59,25 @@ export class FoodPage implements OnInit {
   }
 
   deleteFood(index: number) {
-    this.foodList.splice(index, 1);
+    this.filteredList.splice(index, 1);
   }
 
   hydrateForm(index: number, data: { name: string, type: string }) {
     this.editedItemIndex = index;
     this.formInput.name = data.name;
     this.formInput.type = data.type;
+  }
+
+  filterFood() {
+    this.filteredList = this.foodList.filter((item) => {
+      if (this.filterCriterion === 'tous') {
+        return true;
+      } else {
+        return item.type === this.filterCriterion;
+      }
+    });
+
+    console.log(this.filteredList);
   }
 
 }
